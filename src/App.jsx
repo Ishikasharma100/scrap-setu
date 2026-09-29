@@ -33,14 +33,20 @@ function App() {
       <header className="topbar">
 
         {/* BRAND */}
+
         <div className="brand">
 
           <div className="brand-logo">
-            <Recycle size={23} strokeWidth={2.5} />
+            <img
+              src="/logo.jpeg"
+              alt="ScrapSetu logo"
+            />
           </div>
 
           <div className="brand-name">
-            <span>SCRAP</span>SETU
+            <span>SCRAP</span>
+            <span>SETU</span>
+
             <small>E-WASTE NETWORK</small>
           </div>
 
@@ -48,6 +54,7 @@ function App() {
 
 
         {/* NAVIGATION */}
+
         <nav className="navigation">
 
           <a href="#home">
@@ -70,19 +77,27 @@ function App() {
 
 
         {/* RIGHT SIDE */}
+
         <div className="nav-right">
 
           <div className="network-status">
+
             <span></span>
+
             Network active
+
           </div>
+
 
           <button
             className="signin-button"
             onClick={() => openLogin("collector")}
           >
+
             Sign in
+
             <ArrowUpRight size={16} />
+
           </button>
 
         </div>
@@ -94,30 +109,27 @@ function App() {
           HERO
       ===================================================== */}
 
-      <main className="hero" id="home">
+      <main
+        className="hero"
+        id="home"
+      >
 
-        {/* =================================================
-            ACTUAL LOCAL IMAGE
-
-            Image location:
-
-            public/scrapsetu-hero.png
-
-            DO NOT change this path.
-        ================================================= */}
+        {/* BACKGROUND IMAGE */}
 
         <img
           src="/scrapsetu-hero.png"
-          alt="Collector handing electronic waste to a recycler"
+          alt="Collector handling electronic waste"
           className="hero-image"
         />
 
 
-        {/* DARK CINEMATIC GREEN OVERLAY */}
+        {/* DARK GREEN OVERLAY */}
+
         <div className="hero-dark"></div>
 
 
         {/* VIGNETTE */}
+
         <div className="hero-vignette"></div>
 
 
@@ -137,8 +149,13 @@ function App() {
 
 
           <h1>
+
             SCRAP
-            <span>SETU</span>
+
+            <span>
+              SETU
+            </span>
+
           </h1>
 
 
@@ -199,7 +216,9 @@ function App() {
           >
 
             <div className="role-symbol">
+
               <UserRound size={21} />
+
             </div>
 
 
@@ -237,7 +256,9 @@ function App() {
           >
 
             <div className="role-symbol">
+
               <Recycle size={21} />
+
             </div>
 
 
@@ -270,7 +291,7 @@ function App() {
 
 
         {/* =================================================
-            SMALL BOTTOM INDICATOR
+            BOTTOM INDICATOR
         ================================================= */}
 
         <div className="hero-bottom">
@@ -291,8 +312,7 @@ function App() {
 
 
       {/* =====================================================
-          SMALL INFORMATION SECTIONS
-          These are intentionally minimal.
+          NETWORK SECTION
       ===================================================== */}
 
       <section
@@ -314,6 +334,10 @@ function App() {
 
       </section>
 
+
+      {/* =====================================================
+          IMPACT SECTION
+      ===================================================== */}
 
       <section
         className="minimal-section minimal-section-light"
@@ -352,7 +376,8 @@ function App() {
 
           <div className="login-modal">
 
-            {/* CLOSE */}
+
+            {/* CLOSE BUTTON */}
 
             <button
               className="close-login"
@@ -371,9 +396,9 @@ function App() {
 
               <div className="modal-logo">
 
-                <Recycle
-                  size={22}
-                  strokeWidth={2.5}
+                <img
+                  src="/logo.jpeg"
+                  alt="ScrapSetu logo"
                 />
 
               </div>
@@ -450,7 +475,7 @@ function App() {
             </div>
 
 
-            {/* LOGIN */}
+            {/* LOGIN BUTTON */}
 
             <button className="login-submit">
 

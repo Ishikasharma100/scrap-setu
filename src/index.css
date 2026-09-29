@@ -108,14 +108,7 @@ a {
 
 
 /* =========================================================
-   ACTUAL BACKGROUND IMAGE
-
-   IMPORTANT:
-
-   public/
-      scrapsetu-hero.png
-
-   is loaded here.
+   HERO IMAGE
 ========================================================= */
 
 .hero-image {
@@ -137,10 +130,12 @@ a {
   transform: scale(1.025);
 
   animation:
-    cinematicImageIn 1.8s cubic-bezier(.16,1,.3,1) forwards,
+    cinematicImageIn 1.8s cubic-bezier(.16, 1, .3, 1) forwards,
     slowImageMove 14s ease-in-out 1.8s infinite alternate;
 
-  filter: saturate(0.92) contrast(1.04);
+  filter:
+    saturate(0.92)
+    contrast(1.04);
 }
 
 
@@ -175,10 +170,7 @@ a {
 
 
 /* =========================================================
-   DARK GREEN CINEMATIC TREATMENT
-
-   Image remains visible.
-   Left side is darker for text.
+   DARK GREEN OVERLAY
 ========================================================= */
 
 .hero-dark {
@@ -211,7 +203,7 @@ a {
 
 
 /* =========================================================
-   CINEMATIC VIGNETTE
+   VIGNETTE
 ========================================================= */
 
 .hero-vignette {
@@ -261,7 +253,8 @@ a {
       rgba(1, 12, 8, 0.25)
     );
 
-  border-bottom: 1px solid rgba(255,255,255,0.09);
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.09);
 
   backdrop-filter: blur(7px);
 }
@@ -280,31 +273,43 @@ a {
 }
 
 
+/* LOGO IMAGE */
+
 .brand-logo {
-  width: 41px;
-  height: 41px;
+  width: 50px;
+  height: 50px;
 
   display: flex;
 
   align-items: center;
   justify-content: center;
 
-  color: #08150d;
+  flex-shrink: 0;
 
-  background:
-    linear-gradient(
-      145deg,
-      #d1ff89,
-      #8cff48
-    );
+  overflow: hidden;
 
   border-radius: 12px;
+
+  background: #b8ff68;
 
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.18),
     0 8px 30px rgba(169,255,85,0.17);
 
-  animation: logoFloat 4s ease-in-out infinite;
+  animation:
+    logoFloat 4s ease-in-out infinite;
+}
+
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: inherit;
 }
 
 
@@ -322,6 +327,8 @@ a {
 }
 
 
+/* BRAND TEXT */
+
 .brand-name {
   display: flex;
 
@@ -333,7 +340,7 @@ a {
 
   font-size: 15px;
 
-  line-height: 1;
+  line-height: 0.88;
 
   font-weight: 900;
 
@@ -346,12 +353,19 @@ a {
 }
 
 
+.brand-name span:nth-child(2) {
+  color: var(--lime);
+}
+
+
 .brand-name small {
-  margin-top: 5px;
+  margin-top: 6px;
 
   color: rgba(255,255,255,0.44);
 
   font-size: 6.5px;
+
+  line-height: 1;
 
   letter-spacing: 1.8px;
 
@@ -385,7 +399,8 @@ a {
 
   font-weight: 600;
 
-  transition: color 0.25s ease;
+  transition:
+    color 0.25s ease;
 }
 
 
@@ -407,7 +422,8 @@ a {
 
   transform-origin: center;
 
-  transition: transform 0.25s ease;
+  transition:
+    transform 0.25s ease;
 }
 
 
@@ -447,7 +463,8 @@ a {
 
   background: rgba(3,25,17,0.68);
 
-  border: 1px solid rgba(169,255,85,0.14);
+  border:
+    1px solid rgba(169,255,85,0.14);
 
   border-radius: 20px;
 
@@ -472,7 +489,8 @@ a {
   box-shadow:
     0 0 12px rgba(184,255,104,0.95);
 
-  animation: pulse 1.8s ease-in-out infinite;
+  animation:
+    pulse 1.8s ease-in-out infinite;
 }
 
 
@@ -505,7 +523,8 @@ a {
 
   background: rgba(10,28,20,0.66);
 
-  border: 1px solid rgba(255,255,255,0.22);
+  border:
+    1px solid rgba(255,255,255,0.22);
 
   border-radius: 20px;
 
@@ -523,7 +542,8 @@ a {
 .signin-button:hover {
   background: rgba(20,48,34,0.88);
 
-  border-color: rgba(184,255,104,0.38);
+  border-color:
+    rgba(184,255,104,0.38);
 
   transform: translateY(-1px);
 }
@@ -605,9 +625,7 @@ a {
 
 
 /* =========================================================
-   HUGE SCRAPSETU
-
-   Cinematic condensed typography
+   HUGE SCRAPSETU TITLE
 ========================================================= */
 
 .hero-content h1 {
@@ -621,11 +639,8 @@ a {
     "Barlow Condensed",
     sans-serif;
 
-  font-size: clamp(
-    130px,
-    13.7vw,
-    205px
-  );
+  font-size:
+    clamp(130px, 13.7vw, 205px);
 
   line-height: 0.73;
 
@@ -908,7 +923,8 @@ a {
 
   transform: skewX(-20deg);
 
-  transition: left 0.65s ease;
+  transition:
+    left 0.65s ease;
 }
 
 
@@ -1374,24 +1390,33 @@ a {
 
 
 .modal-logo {
-  width: 43px;
-  height: 43px;
+  width: 45px;
+  height: 45px;
 
   display: flex;
 
   align-items: center;
   justify-content: center;
 
-  color: #08794f;
+  flex-shrink: 0;
 
-  background:
-    linear-gradient(
-      145deg,
-      #dff8e6,
-      #c9efd7
-    );
+  overflow: hidden;
 
   border-radius: 11px;
+
+  background: #b8ff68;
+}
+
+
+.modal-logo img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: inherit;
 }
 
 
@@ -1687,6 +1712,14 @@ a {
 
   .nav-right {
     margin-left: auto;
+  }
+
+
+  .brand-logo {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
   }
 
 
