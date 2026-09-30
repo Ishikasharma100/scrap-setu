@@ -1,100 +1,277 @@
-import { Package, MapPin, CalendarDays } from "lucide-react";
+import { useState } from "react";
+import {
+  Cuboid,
+  MapPin,
+  CalendarDays,
+  Gauge,
+  ChevronRight,
+  CheckCircle2,
+  X,
+  Laptop,
+  Smartphone,
+  Cpu,
+  Package,
+} from "lucide-react";
 
-const lots = [
-  {
-    id: "LOT-1024",
-    material: "Laptop & Computers",
-    collector: "Green Earth Collection",
-    location: "Ghaziabad, UP",
-    weight: "85 kg",
-    date: "30 Sep 2026",
-    status: "Pending",
-  },
-  {
-    id: "LOT-1025",
-    material: "Mobile Phones",
-    collector: "Eco Collectors",
-    location: "Noida, UP",
-    weight: "32 kg",
-    date: "01 Oct 2026",
-    status: "Accepted",
-  },
-  {
-    id: "LOT-1026",
-    material: "Electronic Components",
-    collector: "City E-Waste Team",
-    location: "Delhi, India",
-    weight: "120 kg",
-    date: "02 Oct 2026",
-    status: "Pending",
-  },
-];
+const iconMap = {
+  Laptop,
+  Smartphone,
+  Cpu,
+  Package,
+};
 
-function IncomingLots({ compact = false }) {
-  const displayedLots = compact ? lots.slice(0, 3) : lots;
+function IncomingLots({
+  lots = [],
+  onAcceptLot,
+  onRejectLot,
+  onSelectLot,
+  searchQuery = "",
+  isFullView = false,
+  onViewAll,
+}) {
+  const [statusFilter, setStatusFilter] = useState("All");
+
+  const query = searchQuery.trim().toLowerCase();
+
+  const filteredLots = lots.filter((lot) => {
+    const matchesSearch =
+      !query ||
+      lot.material?.toLowerCase().includes(query) ||
+      lot.collector?.toLowerCase().includes(query) ||
+      lot.id?.toLowerCase().includes(query) ||
+      lot.location?.toLowerCase().includes(query) ||
+      lot.category?.toLowerCase().includes(query) ||
+      lot.status?.toLowerCase().includes(query);
+
+    const matchesStatus =
+      statusFilter === "All" || lot.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const displayLots = isFullView ? filteredLots : filteredLots.slice(0, 3);
 
   return (
-    <section className="recycler-panel">
-      <div className="recycler-panel-header">
-        <div>
-          <div className="recycler-panel-title">
-            <Package size={19} />
-            <h2>Incoming Lots</h2>
+    <div className="panel incoming-panel">
+      <div className="panel-header">
+        <div className="panel-heading">
+          <div className="panel-icon">
+            <Cuboid size={20} />
           </div>
 
-          <p>Review e-waste lots from collectors.</p>
+          <div>
+            <h3>Incoming Lots</h3>
+            <p>Review e-waste received from collectors.</p>
+          </div>
         </div>
 
-        <span className="recycler-count-badge">
+        <button
+          type="button"
+          className="panel-badge"
+          onClick={onViewAll}
+          style={{ cursor: onViewAll ? "pointer" : "default" }}
+        >
           {lots.length} Lots
-        </span>
+        </button>
       </div>
 
-      <div className="recycler-lots-list">
-        {displayedLots.map((lot) => (
-          <article className="recycler-lot-card" key={lot.id}>
-            <div className="recycler-lot-icon">
-              <Package size={21} />
-            </div>
+      {isFullView && (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            padding: "0 18px 12px",
+            borderBottom: "1px solid rgba(83, 208, 160, 0.1)",
+          }}
+        >
+          {["All", "Pending", "Accepted", "Rejected"].map((status) => (
+            <button
+              key={status}
+              type="button"
+              onClick={() => setStatusFilter(status)}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "999px",
+                fontSize: "11px",
+                fontWeight: 600,
+                cursor: "pointer",
+                border: "1px solid",
+                borderColor:
+                  statusFilter === status
+                    ? "rgba(67, 229, 163, 0.6)"
+                    : "rgba(72, 212, 158, 0.15)",
+                background:
+                  statusFilter === status
+                    ? "rgba(20, 113, 80, 0.45)"
+                    : "rgba(4, 36, 27, 0.6)",
+                color: statusFilter === status ? "#43e5a3" : "#86a89c",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+      )}
 
-            <div className="recycler-lot-details">
-              <div className="recycler-lot-title-row">
-                <h3>{lot.material}</h3>
+      <div className="lot-list">
+        {displayLots.length === 0 ? (
+          <div
+            style={{
+              padding: "36px 16px",
+              textAlign: "center",
+              color: "#76978c",
+              fontSize: "12px",
+            }}
+          >
+            No results found
+          </div>
+        ) : (
+          displayLots.map((lot) => {
+            const Icon =
+              iconMap[lot.iconName] ||
+              (typeof lot.icon === "function" ? lot.icon : Package);
 
-                <span
-                  className={`recycler-status ${
-                    lot.status === "Accepted"
-                      ? "status-accepted"
-                      : "status-pending"
-                  }`}
+            return (
+              <div
+                className="lot-row"
+                key={lot.id}
+                onClick={() => onSelectLot && onSelectLot(lot)}
+                style={{ cursor: onSelectLot ? "pointer" : "default" }}
+              >
+                <div className="lot-icon">
+                  <Icon size={21} />
+                </div>
+
+                <div className="lot-main">
+                  <strong>{lot.material}</strong>
+
+                  <div className="lot-sub">
+                    <span>{lot.id}</span>
+                    <span className="separator">•</span>
+                    <span>{lot.collector}</span>
+                  </div>
+
+                  <div className="lot-meta">
+                    <span>
+                      <MapPin size={12} />
+                      {lot.location}
+                    </span>
+
+                    <span>
+                      <Gauge size={12} />
+                      {lot.weight}
+                    </span>
+
+                    <span>
+                      <CalendarDays size={12} />
+                      {lot.date}
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className="lot-status-area"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  {lot.status}
-                </span>
+                  {lot.status === "Pending" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "6px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <button
+                        type="button"
+                        style={{
+                          padding: "5px 11px",
+                          borderRadius: "999px",
+                          background: "rgba(17, 151, 95, 0.3)",
+                          border: "1px solid rgba(67, 229, 163, 0.45)",
+                          color: "#43e5a3",
+                          fontSize: "10px",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          transition: "all 0.2s ease",
+                        }}
+                        onClick={() => onAcceptLot && onAcceptLot(lot.id)}
+                        title="Accept Lot"
+                      >
+                        <CheckCircle2 size={12} />
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        style={{
+                          padding: "5px 11px",
+                          borderRadius: "999px",
+                          background: "rgba(255, 80, 80, 0.16)",
+                          border: "1px solid rgba(255, 90, 90, 0.38)",
+                          color: "#ff8282",
+                          fontSize: "10px",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          transition: "all 0.2s ease",
+                        }}
+                        onClick={() => onRejectLot && onRejectLot(lot.id)}
+                        title="Reject Lot"
+                      >
+                        <X size={12} />
+                        Reject
+                      </button>
+                    </div>
+                  ) : (
+                    <span
+                      className={`status ${
+                        lot.status === "Accepted"
+                          ? "accepted"
+                          : lot.status === "Rejected"
+                          ? "rejected"
+                          : "pending"
+                      }`}
+                      style={
+                        lot.status === "Rejected"
+                          ? {
+                              color: "#ff8282",
+                              background: "rgba(255, 80, 80, 0.18)",
+                            }
+                          : {}
+                      }
+                    >
+                      {lot.status}
+                    </span>
+                  )}
+
+                  <button
+                    type="button"
+                    style={{
+                      background: "transparent",
+                      border: 0,
+                      color: "#64897c",
+                      cursor: "pointer",
+                      padding: 0,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    onClick={() => onSelectLot && onSelectLot(lot)}
+                    aria-label="View lot details"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
               </div>
-
-              <p>{lot.id} · {lot.collector}</p>
-
-              <div className="recycler-lot-meta">
-                <span>
-                  <MapPin size={14} />
-                  {lot.location}
-                </span>
-
-                <span>
-                  <Package size={14} />
-                  {lot.weight}
-                </span>
-
-                <span>
-                  <CalendarDays size={14} />
-                  {lot.date}
-                </span>
-              </div>
-            </div>
-          </article>
-        ))}
+            );
+          })
+        )}
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -128,10 +128,15 @@ function App() {
     }, 4500);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [steps.length]);
   if (showRecyclerDashboard) {
-  return <RecyclerDashboard />;
-}
+    return (
+      <RecyclerDashboard
+        onLogout={() => setShowRecyclerDashboard(false)}
+        onExit={() => setShowRecyclerDashboard(false)}
+      />
+    );
+  }
 
   return (
     <div className="scrapsetu-app">

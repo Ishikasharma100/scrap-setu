@@ -1,132 +1,120 @@
 import {
-  LayoutDashboard,
-  Package,
+  Home,
+  Cuboid,
   Truck,
   Activity,
   Settings,
   Recycle,
   X,
+  Leaf,
+  LogOut,
+  ChevronRight,
 } from "lucide-react";
 
 const menuItems = [
-  {
-    label: "Overview",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Incoming Lots",
-    icon: Package,
-  },
-  {
-    label: "Upcoming Pickups",
-    icon: Truck,
-  },
-  {
-    label: "Recent Activities",
-    icon: Activity,
-  },
-  {
-    label: "Settings",
-    icon: Settings,
-  },
+  { name: "Dashboard", icon: Home },
+  { name: "Incoming Lots", icon: Cuboid },
+  { name: "Upcoming Pickups", icon: Truck },
+  { name: "Recent Activities", icon: Activity },
+  { name: "Settings", icon: Settings },
 ];
 
 function RecyclerSidebar({
-  activePage,
-  setActivePage,
-  sidebarOpen,
-  setSidebarOpen,
+  activeMenu = "Dashboard",
+  setActiveMenu,
+  mobileMenu = false,
+  setMobileMenu,
+  onExit,
 }) {
-  const handleNavigation = (page) => {
-    setActivePage(page);
-    setSidebarOpen(false);
-  };
-
   return (
     <>
-      {sidebarOpen && (
+      {mobileMenu && (
         <div
           className="recycler-sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => setMobileMenu(false)}
           aria-hidden="true"
         />
       )}
 
-      <aside
-        className={`recycler-sidebar ${
-          sidebarOpen ? "recycler-sidebar-open" : ""
-        }`}
-      >
-        {/* BRAND */}
-        <div className="recycler-sidebar-brand">
-          <div className="recycler-brand-icon">
-            <Recycle size={23} />
+      <aside className={`recycler-sidebar ${mobileMenu ? "open" : ""}`}>
+        <div className="sidebar-leaves">
+          <span className="leaf leaf-1"></span>
+          <span className="leaf leaf-2"></span>
+          <span className="leaf leaf-3"></span>
+          <span className="leaf leaf-4"></span>
+          <span className="leaf leaf-5"></span>
+          <span className="leaf leaf-6"></span>
+          <span className="leaf leaf-7"></span>
+          <span className="leaf leaf-8"></span>
+        </div>
+
+        <div className="sidebar-top">
+          <div className="brand-mark">
+            <Recycle size={29} strokeWidth={2.5} />
           </div>
 
-          <div>
-            <h2>
-              SCRAP<span>SETU</span>
-            </h2>
-            <p>RECYCLER PORTAL</p>
+          <div className="brand-copy">
+            <h1>SCRAPSETU</h1>
+            <span>RECYCLER PORTAL</span>
           </div>
 
           <button
             type="button"
-            className="recycler-sidebar-close"
-            onClick={() => setSidebarOpen(false)}
+            className="mobile-close"
+            onClick={() => setMobileMenu(false)}
             aria-label="Close sidebar"
           >
-            <X size={19} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* WORKSPACE */}
-        <div className="recycler-sidebar-label">WORKSPACE</div>
+        <div className="workspace-label">WORKSPACE</div>
 
-        <nav className="recycler-sidebar-nav">
+        <nav className="sidebar-nav">
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activePage === item.label;
+            const active = activeMenu === item.name;
 
             return (
               <button
                 type="button"
-                key={item.label}
-                className={`recycler-nav-item ${
-                  isActive ? "recycler-nav-active" : ""
-                }`}
-                onClick={() => handleNavigation(item.label)}
+                key={item.name}
+                className={`sidebar-link ${active ? "active" : ""}`}
+                onClick={() => {
+                  setActiveMenu(item.name);
+                  setMobileMenu(false);
+                }}
               >
-                <Icon size={19} />
-                <span>{item.label}</span>
+                <Icon size={20} />
+                <span>{item.name}</span>
+
+                {active && <span className="active-dot"></span>}
               </button>
             );
           })}
         </nav>
 
-        {/* BOTTOM SECTION */}
-        <div className="recycler-sidebar-bottom">
-          <div className="recycler-sidebar-help">
-            <div className="recycler-help-icon">
-              <Recycle size={19} />
+        <div className="sidebar-bottom">
+          <div className="sidebar-message">
+            <div className="message-icon">
+              <Leaf size={20} />
             </div>
 
-            <strong>Responsible Recycling</strong>
-
-            <p>
-              Manage e-waste responsibly with ScrapSetu.
-            </p>
+            <div>
+              <strong>Responsible Recycling</strong>
+              <p>Manage e-waste responsibly with ScrapSetu.</p>
+            </div>
           </div>
 
           <button
             type="button"
-            className="recycler-logout-button"
-            onClick={() => {
-              window.location.href = "/";
-            }}
+            className="exit-button"
+            onClick={onExit}
+            aria-label="Exit Dashboard"
           >
-            <X size={18} />
+            <LogOut size={18} />
             <span>Exit Dashboard</span>
+            <ChevronRight size={17} />
           </button>
         </div>
       </aside>

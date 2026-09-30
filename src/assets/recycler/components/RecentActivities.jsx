@@ -1,86 +1,98 @@
 import {
   Activity,
   CheckCircle2,
-  Package,
+  PackageCheck,
   Truck,
   Recycle,
+  XCircle,
+  Settings,
 } from "lucide-react";
 
-const activities = [
-  {
-    title: "Lot accepted",
-    description: "LOT-1025 · Mobile Phones",
-    time: "Today, 11:30 AM",
-    icon: CheckCircle2,
-    color: "green",
-  },
-  {
-    title: "New lot received",
-    description: "LOT-1026 · Electronic Components",
-    time: "Today, 10:15 AM",
-    icon: Package,
-    color: "blue",
-  },
-  {
-    title: "Pickup scheduled",
-    description: "PICK-201 · Ghaziabad",
-    time: "Yesterday, 04:30 PM",
-    icon: Truck,
-    color: "orange",
-  },
-  {
-    title: "Recycling completed",
-    description: "LOT-1018 · 45 kg processed",
-    time: "Yesterday, 12:20 PM",
-    icon: Recycle,
-    color: "purple",
-  },
-];
+const iconMap = {
+  CheckCircle2,
+  PackageCheck,
+  Truck,
+  Recycle,
+  XCircle,
+  Settings,
+};
 
-function RecentActivities({ compact = false }) {
-  const displayedActivities = compact
-    ? activities.slice(0, 4)
-    : activities;
+function RecentActivities({
+  activities = [],
+  onViewAll,
+  isFullView = false,
+}) {
+  const displayedActivities = isFullView
+    ? activities
+    : activities.slice(0, 4);
 
   return (
-    <section className="recycler-panel recycler-activities-panel">
-      <div className="recycler-panel-header">
-        <div>
-          <div className="recycler-panel-title">
-            <Activity size={19} />
-            <h2>Recent Activities</h2>
+    <section className="panel activities-panel">
+      <div className="panel-header">
+        <div className="panel-heading">
+          <div className="panel-icon">
+            <Activity size={20} />
           </div>
 
-          <p>Latest updates from your recycling operations.</p>
+          <div>
+            <h3>Recent Activities</h3>
+            <p>Latest updates from your recycling operations.</p>
+          </div>
         </div>
+
+        {!isFullView && (
+          <button
+            type="button"
+            className="panel-badge"
+            onClick={onViewAll}
+            style={{ cursor: onViewAll ? "pointer" : "default" }}
+          >
+            View All →
+          </button>
+        )}
       </div>
 
-      <div className="recycler-activities-list">
-        {displayedActivities.map((activity, index) => {
-          const Icon = activity.icon;
+      <div className="activity-list">
+        {displayedActivities.length === 0 ? (
+          <div
+            style={{
+              padding: "24px 16px",
+              textAlign: "center",
+              color: "#76978c",
+              fontSize: "12px",
+            }}
+          >
+            No recent activities logged yet.
+          </div>
+        ) : (
+          displayedActivities.map((activity, index) => {
+            const Icon =
+              iconMap[activity.iconName] ||
+              (typeof activity.icon === "function"
+                ? activity.icon
+                : Activity);
 
-          return (
-            <div
-              className="recycler-activity-item"
-              key={`${activity.title}-${index}`}
-            >
+            return (
               <div
-                className={`recycler-activity-icon ${activity.color}`}
+                className="activity-row"
+                key={activity.id || `${activity.title}-${index}`}
               >
-                <Icon size={18} />
-              </div>
+                <div
+                  className={`activity-icon ${activity.type || "green"}`}
+                >
+                  <Icon size={18} />
+                </div>
 
-              <div className="recycler-activity-copy">
-                <strong>{activity.title}</strong>
-                <p>{activity.description}</p>
-              </div>
+                <div className="activity-copy">
+                  <strong>{activity.title}</strong>
+                  <span>{activity.subtitle || activity.description}</span>
+                </div>
 
-              <span className="recycler-activity-time">
-                {activity.time}
-              </span>
-            </div>
-          );
-        })}
+                <span className="activity-time">{activity.time}</span>
+              </div>
+            );
+          })
+        )}
       </div>
     </section>
   );

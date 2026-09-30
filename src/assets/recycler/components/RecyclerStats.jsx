@@ -1,73 +1,100 @@
 import {
-  Package,
-  Clock,
-  CheckCircle2,
-  Recycle,
-  ArrowUpRight,
+  PackageCheck,
+  CalendarDays,
+  Gauge,
+  Clock3,
 } from "lucide-react";
 
-const stats = [
-  {
-    title: "Total Incoming Lots",
-    value: "24",
-    note: "Lots received",
-    icon: Package,
-    color: "blue",
-  },
-  {
-    title: "Pending Requests",
-    value: "08",
-    note: "Awaiting confirmation",
-    icon: Clock,
-    color: "orange",
-  },
-  {
-    title: "Completed Pickups",
-    value: "16",
-    note: "Successfully collected",
-    icon: CheckCircle2,
-    color: "green",
-  },
-  {
-    title: "Total Recycled Weight",
-    value: "1,240 kg",
-    note: "Material processed",
-    icon: Recycle,
-    color: "purple",
-  },
-];
-
-function RecyclerStats() {
+function StatCard({
+  icon: Icon,
+  iconClass,
+  title,
+  value,
+  change,
+  caption,
+  bars,
+}) {
   return (
-    <div className="recycler-stats-grid">
-      {stats.map((stat) => {
-        const Icon = stat.icon;
+    <div className="stat-card">
+      <div className={`stat-icon ${iconClass}`}>
+        <Icon size={20} />
+      </div>
 
-        return (
-          <article className="recycler-stat-card" key={stat.title}>
-            <div className="recycler-stat-top">
-              <div className={`recycler-stat-icon ${stat.color}`}>
-                <Icon size={21} />
-              </div>
+      <span className="stat-title">{title}</span>
 
-              <ArrowUpRight
-                size={17}
-                className="recycler-stat-arrow"
-              />
-            </div>
+      <strong className="stat-value">{value}</strong>
 
-            <p>{stat.title}</p>
+      <div className="stat-bottom">
+        <span className="stat-change">{change}</span>
+        <span>{caption}</span>
+      </div>
 
-            <h3>{stat.value}</h3>
-
-            <span className="recycler-stat-note">
-              {stat.note}
-            </span>
-          </article>
-        );
-      })}
+      <div className="mini-bars">
+        {bars.map((height, index) => (
+          <span
+            key={index}
+            style={{ height: `${height}%` }}
+          ></span>
+        ))}
+      </div>
     </div>
   );
 }
 
+function RecyclerStats({
+  totalLots = "24",
+  scheduledPickups = "16",
+  recycledMaterial = "1,240 kg",
+  pendingRequests = "08",
+  totalLotsChange = "+12%",
+  scheduledChange = "+8%",
+  materialChange = "+15%",
+  pendingChange = "−5%",
+}) {
+  return (
+    <section className="stats-grid">
+      <StatCard
+        icon={PackageCheck}
+        iconClass="green"
+        title="Total Incoming Lots"
+        value={totalLots}
+        change={totalLotsChange}
+        caption="+2 today"
+        bars={[30, 43, 56, 46, 67]}
+      />
+
+      <StatCard
+        icon={CalendarDays}
+        iconClass="purple"
+        title="Scheduled Pickups"
+        value={scheduledPickups}
+        change={scheduledChange}
+        caption="+3 this week"
+        bars={[35, 50, 43, 60, 73]}
+      />
+
+      <StatCard
+        icon={Gauge}
+        iconClass="orange"
+        title="Recycled Material"
+        value={recycledMaterial}
+        change={materialChange}
+        caption="this month"
+        bars={[30, 48, 40, 62, 75]}
+      />
+
+      <StatCard
+        icon={Clock3}
+        iconClass="blue"
+        title="Pending Requests"
+        value={pendingRequests}
+        change={pendingChange}
+        caption="+1 today"
+        bars={[35, 48, 38, 59, 72]}
+      />
+    </section>
+  );
+}
+
 export default RecyclerStats;
+export { StatCard };
