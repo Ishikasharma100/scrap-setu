@@ -22,10 +22,13 @@ import {
 } from "lucide-react";
 
 import "./index.css";
+import RecyclerDashboard from "./assets/recycler/RecyclerDashboard.jsx";
 
 function App() {
   const [loginRole, setLoginRole] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
+  const [showRecyclerDashboard, setShowRecyclerDashboard] = useState(false);
+
 
   const openLogin = (role) => {
     setLoginRole(role);
@@ -126,6 +129,9 @@ function App() {
 
     return () => clearInterval(timer);
   }, []);
+  if (showRecyclerDashboard) {
+  return <RecyclerDashboard />;
+}
 
   return (
     <div className="scrapsetu-app">
@@ -1068,13 +1074,18 @@ function App() {
             </div>
 
 
-            <button className="login-submit">
-
-              Sign in
-
-              <ArrowRight size={17} />
-
-            </button>
+            <button
+  className="login-submit"
+  onClick={() => {
+    if (loginRole === "recycler") {
+      setLoginRole(null);
+      setShowRecyclerDashboard(true);
+    }
+  }}
+>
+  Sign in
+  <ArrowRight size={17} />
+</button>
 
 
             <div className="change-role">
